@@ -1,0 +1,70 @@
+# Generic code to turn on a bit in a bitwise holding register
+write_register_turn_on_bit:
+  sequence:
+    - service: modbus.write_register
+      data:
+        hub: "{{ hub }}"
+        slave: "{{ slave_id }}"
+        address: "{{ address }}"
+        value: "{{ states(sensor_value) | int(default=0) | bitwise_or(2 ** (bit | int - 1)) }}"
+    - service: homeassistant.update_entity
+      data:
+        entity_id: "{{ sensor_value }}"
+
+# Generic code to turn off a bit in a bitwise holding register
+write_register_turn_off_bit:
+  sequence:
+    - service: modbus.write_register
+      data:
+        hub: "{{ hub }}"
+        slave: "{{ slave_id }}"
+        address: "{{ address }}"
+        value: "{{ states(sensor_value) | int(default=0) | bitwise_and(65535 - (2 ** (bit | int - 1))) }}"
+    - service: homeassistant.update_entity
+      data:
+        entity_id: "{{ sensor_value }}"
+
+# Increase the indoor temperature by an int value of the Acond Grandis R
+increase_acond_temperature_value:
+  sequence:
+    - service: modbus.write_register
+      data:
+        hub: "{{ hub }}"
+        slave: "{{ slave_id }}"
+        address: "{{ address }}"
+        value: "{{ int(states(sensor_value)) + (int(temperature_value) * 10) }}"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+          - "{{ sensor_value }}"
+          - "{{ update_sensor }}"
+
+# Decrease the indoor temperature by an int value of the Acond Grandis R
+decrease_acond_temperature_value:
+  sequence:
+    - service: modbus.write_register
+      data:
+        hub: "{{ hub }}"
+        slave: "{{ slave_id }}"
+        address: "{{ address }}"
+        value: "{{ int(states(sensor_value)) - (int(temperature_value) * 10) }}"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+          - "{{ sensor_value }}"
+          - "{{ update_sensor }}"
+
+# Set the indoor temperature by an int value of the Acond Grandis R
+set_acond_temperature_value:
+  sequence:
+    - service: modbus.write_register
+      data:
+        hub: "{{ hub }}"
+        slave: "{{ slave_id }}"
+        address: "{{ address }}"
+        value: "(int(temperature_value) * 10)"
+    - service: homeassistant.update_entity
+      data:
+        entity_id:
+          - "{{ sensor_value }}"
+          - "{{ update_sensor }}"

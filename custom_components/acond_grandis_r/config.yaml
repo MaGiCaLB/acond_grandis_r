@@ -1,0 +1,20 @@
+homeassistant:
+  customize: !include customize.yaml
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Modbus configuration for Acond Grandis R
+modbus: !include modbus.yaml
+
+# Logger for modbud
+logger: !include logger.yaml
+
+# Template for the modbus implementation
+template: !include template.yaml
+
+# Include scripts configuration
+scripts: !include scripts.yaml
+
+# Include the automations
+automation: !include automations.yaml

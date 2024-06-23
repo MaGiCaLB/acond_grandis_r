@@ -1,0 +1,5 @@
+  default: warning
+  logs:
+    # Uncomment below to troubleshoot modbus implementation
+    # homeassistant.components.modbus: debug
+    # pymodbus: debug

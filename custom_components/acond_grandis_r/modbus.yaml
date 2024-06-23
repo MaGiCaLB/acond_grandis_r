@@ -1,0 +1,140 @@
+- name: acond_grandis_r
+  type: tcp
+  host: _host_ip_address_
+  port: 502
+  delay: 1
+  timeout: 1
+  message_wait_milliseconds: 1
+  climates:
+    - name: ACOND_T_set_indoor1  # Indoor temperature, sensor #1 (I only have one at this time)
+      slave: 1
+      address: 0
+      target_temp_register: 0
+      input_type: input
+      data_type: int16
+      scan_interval: 60
+      scale: 0.1
+      precision: 1
+      max_temp: 28
+      min_temp: 10
+      temp_step: 0.1
+      unique_id: acond_grandis_r_0001
+    - name: ACOND_T_set_TUV  # Domestic hot water temperature
+      slave: 1
+      address: 4
+      target_temp_register: 4
+      input_type: input
+      data_type: int16
+      scan_interval: 60
+      scale: 0.1
+      precision: 1
+      max_temp: 65
+      min_temp: 10
+      temp_step: 0.1
+      unique_id: acond_grandis_r_0002
+  sensors:
+    - name: ACOND_T_act_indoor1  # Current indoor temperature at sensor #1
+      slave: 1
+      address: 1
+      data_type: int16
+      scale: 0.1
+      precision: 1
+      input_type: input
+      device_class: temperature
+      unit_of_measurement: 'ºC'
+      unique_id: acond_grandis_r_0003
+    - name: ACOND_T_act_TUV  # Current domestic hot water temperature
+      slave: 1
+      address: 5
+      data_type: int16
+      scale: 0.1
+      precision: 1
+      input_type: input
+      device_class: temperature
+      unit_of_measurement: 'ºC'
+      unique_id: acond_grandis_r_0004
+    - name: ACOND_T_act_water_back  # Current return water temperature in heating circuit
+      slave: 1
+      address: 8
+      data_type: int16
+      scale: 0.1
+      precision: 1
+      input_type: input
+      device_class: temperature
+      unit_of_measurement: 'ºC'
+      unique_id: acond_grandis_r_0005
+    - name: ACOND_T_act_air  # Current outside air temperature
+      slave: 1
+      address: 9
+      data_type: int16
+      scale: 0.1
+      precision: 1
+      input_type: input
+      device_class: temperature
+      unit_of_measurement: 'ºC'
+      unique_id: acond_grandis_r_0006
+    - name: ACOND_err_number  # General error number, should always be 0 in normal operation
+      slave: 1
+      address: 20
+      data_type: int16
+      input_type: input
+      unique_id: acond_grandis_r_0007
+    - name: ACOND_err_number_SECMono  # SECMono error number, should always be 0 in normal operation
+      slave: 1
+      address: 21
+      data_type: int16
+      input_type: input
+      unique_id: acond_grandis_r_0008
+    - name: ACOND_err_number_driver  # Driver error number, should always be 0 in normal operation
+      slave: 1
+      address: 22
+      data_type: int16
+      input_type: input
+      unique_id: acond_grandis_r_0009
+    - name: ACOND_comp_rpm_actual  # Current compressor speed
+      slave: 1
+      address: 23
+      data_type: int16
+      input_type: input
+      unit_of_measurement: "rpm"
+      unique_id: acond_grandis_r_0010
+    - name: ACOND_comp_rpm_max  # Maximum compressor speed
+      slave: 1
+      address: 19
+      data_type: int16
+      input_type: input
+      unit_of_measurement: "rpm"
+      unique_id: acond_grandis_r_0011
+    - name: ACOND_type_reg_pan  # Current type regulation
+      slave: 1
+      address: 14
+      data_type: int16
+      input_type: input
+      scan_interval: 60
+      unique_id: acond_grandis_r_0012
+    - name: ACOND_type_rezim_pan  # Heatpump mode
+      slave: 1
+      address: 13
+      data_type: int16
+      input_type: input
+      scan_interval: 60
+      unique_id: acond_grandis_r_0013
+    - name: ACOND_TC_status # Current status of the heatpump
+      slave: 1
+      address: 6
+      scan_interval: 60
+      data_type: int16
+      input_type: input
+      unique_id: acond_grandis_r_0014
+    - name: ACOND_TC_set # Set the state of the heatpump using the holding register
+      slave: 1
+      address: 5
+      input_type: holding
+      data_type: int16
+      unique_id: acond_grandis_r_0015
+    - name: ACOND_T_set_indoor1_holding # Set the indoor temperature of the heatpump using the holding register
+      slave: 1
+      address: 0
+      input_type: holding
+      data_type: int16
+      unique_id: acond_grandis_r_0016

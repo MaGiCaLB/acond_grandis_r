@@ -1,0 +1,12 @@
+{
+  "domain": "acond_grandis_r",
+  "name": "Acond Grandis-R Heatpump",
+  "version": 0.1.1
+  "codeowners": ["@MaGiCaLB"],
+  "dependencies": ["modbus","hacs"."tado"],
+  "documentation": "https://github.com/MaGiCaLB/acond_grandis_r",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/MaGiCaLB/acond_grandis_r/issues"
+  "requirements": []
+}

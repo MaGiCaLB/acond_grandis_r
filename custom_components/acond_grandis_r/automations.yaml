@@ -1,0 +1,136 @@
+- id: '1719162150918'
+  alias: Tado room HVAC state changes
+  description: Tado room HVAC state changes. Find out what to do with Acond Grandis R
+  trigger:
+  - platform: state
+    entity_id:
+    - climate.room
+    enabled: true
+    attribute: hvac_action
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: climate.room
+        attribute: hvac_action
+        state: heating
+      - condition: state
+        entity_id: climate.acond_t_set_indoor1
+        attribute: temperature
+        state: <= 19.0
+      sequence:
+      - sequence:
+        - delay:
+            hours: 0
+            minutes: 2
+            seconds: 0
+            milliseconds: 0
+        - if:
+          - condition: state
+            entity_id: sensor.room_heating
+            attribute: unit_of_measurement
+            state: < 50
+          then:
+          - service: script.increase_temperature_value
+            data:
+              temperature_value: 2
+              hub: acond_grandis_r
+              slave_id: 1
+              address: 0
+              sensor_value: sensor.acond_t_set_indoor1_holding
+              update_sensor: climates.acond_t_set_indoor1
+          else:
+          - service: script.increase_temperature_value
+            data:
+              temperature_value: 5
+              hub: acond_grandis_r
+              slave_id: 1
+              address: 0
+              sensor_value: sensor.acond_t_set_indoor1_holding
+              update_sensor: climates.acond_t_set_indoor1
+    - conditions:
+      - condition: state
+        entity_id: climate.room
+        attribute: hvac_action
+        state: idle
+      - condition: state
+        entity_id: climate.acond_t_set_indoor1
+        attribute: temperature
+        state: '>= 19.1'
+      sequence:
+      - sequence:
+        - delay:
+            hours: 0
+            minutes: 2
+            seconds: 0
+            milliseconds: 0
+        - if:
+          - condition: and
+            conditions:
+            - condition: state
+              entity_id: climate.room_x
+              attribute: hvac_action
+              state: idle
+            - condition: state
+              enabled: true
+              entity_id: climate.room_y
+              state: idle
+              attribute: hvac_action
+            - condition: state
+              enabled: true
+              entity_id: climate.room_z
+              state: idle
+              attribute: hvac_action
+          then:
+          - service: script.set_acond_temperature_value
+            data:
+              temperature_value: 19
+              hub: acond_grandis_r
+              slave_id: 1
+              address: 0
+              sensor_value: sensor.acond_t_set_indoor1_holding
+              update_sensor: climates.acond_t_set_indoor1
+    - conditions:
+      - condition: state
+        entity_id: climate.room
+        attribute: hvac_action
+        state: 'off'
+      - condition: state
+        entity_id: climate.acond_t_set_indoor1
+        attribute: temperature
+        state: '>= 19.1'
+      sequence:
+      - sequence:
+        - delay:
+            hours: 0
+            minutes: 2
+            seconds: 0
+            milliseconds: 0
+        - if:
+          - condition: and
+            conditions:
+            conditions:
+            - condition: state
+              entity_id: climate.room_x
+              attribute: hvac_action
+              state: idle
+            - condition: state
+              enabled: true
+              entity_id: climate.room_y
+              state: idle
+              attribute: hvac_action
+            - condition: state
+              enabled: true
+              entity_id: climate.room_z
+              state: idle
+              attribute: hvac_action
+          then:
+          - service: script.set_acond_temperature_value
+            data:
+              temperature_value: 19
+              hub: acond_grandis_r
+              slave_id: 1
+              address: 0
+              sensor_value: sensor.acond_t_set_indoor1_holding
+              update_sensor: climates.acond_t_set_indoor1
+  mode: single
